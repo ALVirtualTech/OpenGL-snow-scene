@@ -33,7 +33,7 @@ We set out with one simple task: We wanted to make it snow with real time graphi
 \end{figure}
 
 \noindent
-Without further ado we started enumerating the things needed in order to produce a digital world like the one in the video. 
+Without further ado we started enumerating the things needed in order to produce a digital world like the one in the video.
 
 \begin{enumerate}
   \item Models for trees and light posts.
@@ -45,16 +45,20 @@ Without further ado we started enumerating the things needed in order to produce
   \item The camera shaking.
 \end{enumerate}
 
-These were the initial goals for the project. In the end we never implemented snow on the ground nor snow on the camera lens. All of these tasks has some crux, even the most simplest tasks like placing millions of little snow flakes on the screen.
+\noindent
+These were the initial goals for the project. In the end we never implemented snow on the ground nor snow on the camera lens.
+
+
 
 \section{Background and Theory}
 
-In this chapter we address each of the goals listed in the introduction. Not all theory below is used in the implementation, but were looked upon or initially planned to be used.
+In this chapter we address each of the goals listed in the introduction. Not all theory below is used in the implementation, but was researched in the preparations of the project.
+
 
 \subsection{Models for trees and light posts}
 
 This first point seems dead simple but can be made quite tedious when one takes into account that models should have textures and preferrably also bump maps baked into them. Seeing as we're not 3D artists by any stretch of the imagination a lot of time can be consumed by such seemingly simple tasks.
- 
+
 
 \subsection{Multiple directed light cones}
 
@@ -109,7 +113,7 @@ A somewhat ugly solution would be to simply not have the snow flakes cast any sh
 
 One can represent the shadows cast from a solid object when shone upon by a directed light as almost infinitely large geometry in the direction of the light. Wether other solid geometry intersects with these shadow volumes is then used to determine whether or not the objects has a shadow cast on it.
 
-We decided against using shadow volumes as we had absolutely no need for pixel perfect edges for shadows on the ground. On the contrary we want the shadows cast by the snow to be very soft.
+We decided against using shadow volumes as we had absolutely no need for pixel perfect edges for shadows on the ground. On the contrary we want some of the shadows cast by the snow to be very soft.
 
 
 \subsubsection{Shadow Maps}
