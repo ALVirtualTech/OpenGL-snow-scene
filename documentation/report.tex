@@ -247,29 +247,22 @@ vec3 applyLight(Light light, vec3 surfaceColor, vec3 normal,
 }
 \end{lstlisting}
 
+\noindent
 The last argument passed into the \emph{applyLight} function in Listing~\ref{lst:applyLight} is the output of the \emph{getShadow} function in Listing~\ref{lst:getShadow}.
 
 \begin{minipage}{\textwidth}
-\begin{lstlisting}[label=lst:getShadow,caption= The shader function figuring out whether the fragment is in the shade.]
+\begin{lstlisting}[label=lst:getShadow,caption= The shader function figuring out whether the fragment is in shade.]
 float getShadow(int index) {
-  // Perform perspective division to get the actual texture position
   vec4 shadowCoordinateWdivide = lightSourceCoord[index] / lightSourceCoord[index].w;
-
-  /* Used to lower moire' pattern and self-shadowing
-   * The optimal value here will vary with different GPU's
-   * depending on their Z buffer resolution.
-   */
   shadowCoordinateWdivide.x -= 0.00001;
   shadowCoordinateWdivide.y -= 0.00001;
   shadowCoordinateWdivide.z -= 0.00005;
-
   float shadow = 1.0; // 1.0 = no shadow
   for (int i = 0; i < 4; i++) {
     int randomIndex = int(4.0 * random(gl_FragCoord.xyy, i)) \% 4;
     float distanceFromLight = texture(shadowMap[index], shadowCoordinateWdivide.st
                               + poissonDisk[randomIndex] / 1000.0).x;
     distanceFromLight = (distanceFromLight-0.5) * 2.0;
-
     if (lightSourceCoord[index].w > 0.0)
       if (distanceFromLight < shadowCoordinateWdivide.z)
         shadow -= 0.001 / (shadowCoordinateWdivide.z - distanceFromLight);
@@ -280,11 +273,12 @@ float getShadow(int index) {
 \end{lstlisting}
 \end{minipage}
 
+\noindent
 As is visible in Listing~\ref{lst:getShadow} we make four pseudo-randomly scattered samples for each fragment. This results in the dithering which can be seen in Figure~\ref{fig:dithering}. It doesn't look very pretty close up, but at a distance it smooths out an otherwise straight edge. We could add a low-pass filter to "further smooth the contours and merge the dithered edge of self shadowing" as suggested by L. Williams in \cite{shadow-maps}.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.9\textwidth]{dithering}
+  \includegraphics[width=0.85\textwidth]{dithering}
   \caption{\label{fig:dithering} The effect of the pseudo random shadow map samples.}
 \end{figure}
 
@@ -310,6 +304,7 @@ This places a square in front of the camera displaying the depth buffer we want 
   \caption{\label{fig:fbo-image} The depth buffer from a street light.}
 \end{figure}
 
+\noindent
 In Figure~\ref{fig:fbo-image} we can see how some snow flakes are closer to the camera than the ground plane. When drawing the ground plane then, later on, these areas marked grey in the shadow map will have a shadow cast on them.
 
 \subsection{Snowfall}
@@ -360,7 +355,6 @@ In Figure~\ref{fig:result} we can see a screen capture of the resulting scene. T
   \caption{\label{fig:result} Our OpenGL snow scene.}
 \end{figure}
 
-You can also see a short video on \href{YouTube}{TODO!}
 
 \newpage
 
