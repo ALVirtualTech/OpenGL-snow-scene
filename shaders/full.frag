@@ -1,6 +1,6 @@
 #version 150
 
-#define MAX_LIGHTS 10
+#define MAX_LIGHTS 2
 
 in vec4 lightSourceCoord[MAX_LIGHTS];
 in vec2 fragTexCoord;
@@ -33,7 +33,7 @@ vec2 poissonDisk[4] =
 
 float random(vec3 seed, int i) {
 	vec4 seed4 = vec4(seed, i);
-	float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
+	float dot_product = dot(seed4, vec4(12.9898, 78.233, 45.164, 94.673));
 	return fract(sin(dot_product) * 43758.5453);
 }
 
@@ -76,7 +76,7 @@ float getShadow(int index) {
 	float shadow = 1.0; // 1.0 = no shadow
 	for (int i = 0; i < 4; i++) {
 		int randomIndex = int(4.0 * random(gl_FragCoord.xyy, i)) % 4;
-		float distanceFromLight =  texture(shadowMap[index], shadowCoordinateWdivide.st + poissonDisk[randomIndex] / 1000.0).x;
+		float distanceFromLight = texture(shadowMap[0], shadowCoordinateWdivide.st + poissonDisk[randomIndex] / 1000.0).x;
 		distanceFromLight = (distanceFromLight-0.5) * 2.0;
 
 		if (lightSourceCoord[index].w > 0.0)
@@ -96,7 +96,10 @@ void main() {
 
 	outColor = vec4(0);
 	for (int i = 0; i < nrLights; i++) {
-		outColor += vec4(applyLight(light[i], surfaceColor.rgb, normal, surfacePos, surfaceToCamera, getShadow(i)),
+		outColor += vec4(applyLight(light[i], surfaceColor.rgb, normal,
+		                            surfacePos, surfaceToCamera, getShadow(i)),
 		                 surfaceColor.a);
 	}
+	// Set the index of shadowMap to 1 and this code will work.
+	outColor += texture(shadowMap[0], vec2(1, 2)).x / 1000.0;
 }

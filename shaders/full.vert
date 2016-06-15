@@ -1,7 +1,7 @@
 #version 150
 #extension GL_ARB_explicit_attrib_location : enable
 
-#define MAX_LIGHTS 10
+#define MAX_LIGHTS 2
 
 layout (location = 0) in vec3 inPosition;
 layout (location = 1) in vec3 normal;
