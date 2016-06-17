@@ -4,7 +4,7 @@
 #include "libraries/VectorUtils3.h"
 #include "light.h"
 
-#define MAX_LIGHTS 10
+#define MAX_LIGHTS 2
 
 
 GLuint fullProgram;
